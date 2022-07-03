@@ -1,5 +1,9 @@
 import Ship from '../factories/Ship';
 
+test('Ship with negative length throws', () => {
+  expect(() => Ship(-5)).toThrow();
+});
+
 test('Ship with length 2 is initialized', () => {
   const ship = Ship(2);
   expect(ship.length).toBe(2);
