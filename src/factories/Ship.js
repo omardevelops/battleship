@@ -3,7 +3,8 @@ const Ship = (len) => {
   let hitPos = Array(len).fill(0); // 0 is unhit, and 1 is hit
 
   const hitAt = (pos) => {
-    if (pos >= length || pos <= -1) throw new Error('invalid'); // check for out of bounds
+    if (pos >= length || pos <= -1)
+      throw new Error('hitAt position is out of bounds. Check ship length.'); // check for out of bounds
     hitPos[pos] = 1;
   };
   const isSunk = () =>
