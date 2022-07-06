@@ -19,7 +19,21 @@ test('Creates and registers ships', () => {
   });
 });
 
-test('Places a ship on an empty grid', () => {
+test('Places a ship on an empty grid horizontally (1)', () => {
+  const board = Gameboard(5);
+  const ship = Ship(4);
+  board.registerShip(ship);
+  board.placeShipOnGrid(1, 0, 'x');
+  expect(board.grid).toEqual([
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+  ]);
+});
+
+test.skip('Places a ship on an empty grid horizontally (2)', () => {
   const board = Gameboard(5);
   const ship = Ship(4);
   board.registerShip(ship);
