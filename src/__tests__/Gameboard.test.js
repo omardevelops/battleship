@@ -78,7 +78,7 @@ test('Does not place a ship on a preexisting ship location', () => {
   ]);
 });
 
-test('Does not place a ship near preexisting ships (x-axis)', () => {
+test('Does not place a ship near preexisting ships (x-axis) ', () => {
   const board = Gameboard(5);
   const ship1 = Ship(4);
   const newShip = Ship(3);
@@ -113,7 +113,7 @@ test('Placing ship out of bounds throws (x and y)', () => {
   );
 });
 
-test('Placing ship longer than allowed does nothing (x-axis)', () => {
+test('Placing ship longer than allowed throws (x-axis)', () => {
   const board = Gameboard(5); // 5x5 grid
   const ship = Ship(3);
   board.registerShip(ship);
@@ -122,7 +122,7 @@ test('Placing ship longer than allowed does nothing (x-axis)', () => {
   );
 });
 
-test('Placing ship longer than allowed does nothing (y-axis)', () => {
+test('Placing ship longer than allowed throws (y-axis)', () => {
   const board = Gameboard(5); // 5x5 grid
   const ship = Ship(3);
   board.registerShip(ship);
