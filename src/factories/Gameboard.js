@@ -82,9 +82,25 @@ const Gameboard = (gridSize) => {
     }
   };
 
+  const isEveryShipSunk = () => {
+    const ships = Object.values(shipRegistry);
+    let isAllSunk = true;
+    ships.forEach((ship) => {
+      if (ship.isSunk() === false) isAllSunk = false;
+    });
+    return isAllSunk;
+  };
+
   initializeGrid();
 
-  return { shipRegistry, grid, registerShip, placeShipOnGrid, receiveAttack };
+  return {
+    shipRegistry,
+    grid,
+    registerShip,
+    placeShipOnGrid,
+    receiveAttack,
+    isEveryShipSunk,
+  };
 };
 
 export default Gameboard;

@@ -189,6 +189,46 @@ describe('Receive Attack function', () => {
   });
 });
 
-test.skip('meow', () => {
-  const board = Gameboard();
+describe('Check if all ships are sunk', () => {
+  let board, ships;
+  beforeEach(() => {
+    board = Gameboard(5);
+    ships = [Ship(2), Ship(1), Ship(2)];
+    ships.forEach((ship) => board.registerShip(ship));
+    board.placeShipOnGrid(1, { x: 0, y: 0 }, 'y');
+    board.placeShipOnGrid(2, { x: 2, y: 1 }, 'y');
+    board.placeShipOnGrid(3, { x: 4, y: 2 }, 'y');
+  });
+
+  test('Checks and returns for all ships sunk', () => {
+    const coords = [
+      { x: 0, y: 0 },
+      { x: 0, y: 1 },
+      { x: 2, y: 1 },
+      { x: 4, y: 2 },
+      { x: 4, y: 3 },
+    ];
+    coords.forEach((coord) => board.receiveAttack(coord));
+    expect(board.isEveryShipSunk()).toBe(true);
+  });
+
+  test('Checks and returns for partial ships sunk', () => {
+    const coords = [
+      { x: 0, y: 0 },
+      { x: 0, y: 1 },
+      { x: 4, y: 2 },
+      { x: 4, y: 3 },
+    ];
+    coords.forEach((coord) => board.receiveAttack(coord));
+    expect(board.isEveryShipSunk()).toBe(false);
+  });
+
+  test('Checks and returns for no sunk ships', () => {
+    const coords = [
+      { x: 0, y: 0 },
+      { x: 4, y: 3 },
+    ];
+    coords.forEach((coord) => board.receiveAttack(coord));
+    expect(board.isEveryShipSunk()).toBe(false);
+  });
 });
