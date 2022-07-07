@@ -64,6 +64,10 @@ const Gameboard = (gridSize) => {
     }
   };
 
+  const receiveAttack = ({ x, y }) => {
+    return -1;
+  };
+
   initializeGrid();
 
   return { shipRegistry, grid, registerShip, placeShipOnGrid };
