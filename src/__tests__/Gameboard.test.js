@@ -149,6 +149,46 @@ test('Placing ship longer than allowed throws (y-axis)', () => {
   );
 });
 
+describe('Receive Attack function', () => {
+  let board, ships;
+  beforeEach(() => {
+    board = Gameboard(5);
+    ships = [Ship(4), Ship(3), Ship(2)];
+    ships.forEach((ship) => board.registerShip(ship));
+    board.placeShipOnGrid(1, { x: 0, y: 0 }, 'x');
+    board.placeShipOnGrid(2, { x: 0, y: 2 }, 'x');
+    board.placeShipOnGrid(3, { x: 0, y: 4 }, 'x');
+  });
+
+  test('Grid is updated for successful hit', () => {
+    board.receiveAttack({ x: 1, y: 0 });
+    expect(board.grid).toEqual([
+      [1, 'x', 1, 1, 0],
+      [0, 0, 0, 0, 0],
+      [2, 2, 2, 0, 0],
+      [0, 0, 0, 0, 0],
+      [3, 3, 0, 0, 0],
+    ]);
+  });
+
+  test('Ship 3 sinks as expected after 2 hits', () => {
+    board.receiveAttack({ x: 0, y: 4 });
+    board.receiveAttack({ x: 1, y: 4 });
+    expect(ships[2].isSunk()).toBe(true);
+  });
+
+  test('Miss attack is updated on grid', () => {
+    board.receiveAttack({ x: 4, y: 0 });
+    expect(board.grid).toEqual([
+      [1, 1, 1, 1, 'm'],
+      [0, 0, 0, 0, 0],
+      [2, 2, 2, 0, 0],
+      [0, 0, 0, 0, 0],
+      [3, 3, 0, 0, 0],
+    ]);
+  });
+});
+
 test.skip('meow', () => {
   const board = Gameboard();
 });

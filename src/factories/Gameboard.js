@@ -65,12 +65,26 @@ const Gameboard = (gridSize) => {
   };
 
   const receiveAttack = ({ x, y }) => {
-    return -1;
+    const target = grid[y][x];
+    if (target === 'm' || target === 'x')
+      // If previously missed or already hit
+      throw new Error(
+        'Attack not allowed. This spot is previously missed or already hit.'
+      );
+    else if (target !== 0) {
+      // Hit ship in this case
+      const targetShip = shipRegistry[target]; // Fetch Ship object
+      targetShip.hit(); // Register hit in object
+      grid[y][x] = 'x'; // Update grid
+    } else {
+      // Otherwise missed
+      grid[y][x] = 'm'; // Update grid
+    }
   };
 
   initializeGrid();
 
-  return { shipRegistry, grid, registerShip, placeShipOnGrid };
+  return { shipRegistry, grid, registerShip, placeShipOnGrid, receiveAttack };
 };
 
 export default Gameboard;
