@@ -19,7 +19,7 @@ test('Creates and registers ships', () => {
   });
 });
 
-test('Places a ship on an empty grid x-axis (1)', () => {
+test('Places a ship on an empty grid x-axis', () => {
   const board = Gameboard(5);
   const ship = Ship(4);
   board.registerShip(ship);
@@ -33,31 +33,49 @@ test('Places a ship on an empty grid x-axis (1)', () => {
   ]);
 });
 
-test('Places a ship on an empty grid x-axis (2)', () => {
-  const board = Gameboard(5);
-  const ship = Ship(3);
-  board.registerShip(ship);
-  board.placeShipOnGrid(1, { x: 1, y: 2 }, 'x');
-  expect(board.grid).toEqual([
-    [0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0],
-    [0, 1, 1, 1, 0],
-    [0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0],
-  ]);
-});
-
-test('Places a ship on an empty grid x-axis (3)', () => {
+test('Places a ship on an empty grid y-axis', () => {
   const board = Gameboard(5);
   const ship = Ship(4);
   board.registerShip(ship);
-  board.placeShipOnGrid(1, { x: 0, y: 4 }, 'x');
+  board.placeShipOnGrid(1, { x: 3, y: 1 }, 'y');
   expect(board.grid).toEqual([
     [0, 0, 0, 0, 0],
+    [0, 0, 0, 1, 0],
+    [0, 0, 0, 1, 0],
+    [0, 0, 0, 1, 0],
+    [0, 0, 0, 1, 0],
+  ]);
+});
+
+test('Places ships on an grid with other ships x-axis', () => {
+  const board = Gameboard(5);
+  const ships = [Ship(5), Ship(4), Ship(5)];
+  ships.forEach((ship) => board.registerShip(ship));
+  board.placeShipOnGrid(1, { x: 0, y: 0 }, 'x');
+  board.placeShipOnGrid(2, { x: 1, y: 2 }, 'x');
+  board.placeShipOnGrid(3, { x: 0, y: 4 }, 'x');
+  expect(board.grid).toEqual([
+    [1, 1, 1, 1, 1],
     [0, 0, 0, 0, 0],
+    [0, 2, 2, 2, 2],
     [0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0],
-    [1, 1, 1, 1, 0],
+    [3, 3, 3, 3, 3],
+  ]);
+});
+
+test('Places ships on an grid with other ships mixed axis', () => {
+  const board = Gameboard(5);
+  const ships = [Ship(5), Ship(3), Ship(3)];
+  ships.forEach((ship) => board.registerShip(ship));
+  board.placeShipOnGrid(1, { x: 0, y: 0 }, 'y');
+  board.placeShipOnGrid(2, { x: 2, y: 2 }, 'x');
+  board.placeShipOnGrid(3, { x: 2, y: 0 }, 'x');
+  expect(board.grid).toEqual([
+    [1, 0, 3, 3, 3],
+    [1, 0, 0, 0, 0],
+    [1, 0, 2, 2, 2],
+    [1, 0, 0, 0, 0],
+    [1, 0, 0, 0, 0],
   ]);
 });
 

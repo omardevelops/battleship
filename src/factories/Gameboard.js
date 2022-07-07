@@ -61,7 +61,6 @@ const Gameboard = (gridSize) => {
         for (let i = startPos[axis]; i <= endPos[axis]; i++) {
           grid[i][startPos.x] = shipIndex;
         }
-      console.log(grid);
     }
   };
 
