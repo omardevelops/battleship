@@ -25,3 +25,21 @@ describe('Player Attack func', () => {
     });
   });
 });
+
+describe('Player Attack Func for already Missed/Hit spots', () => {
+  beforeEach(() => {
+    const mockHit = { receiveAttack: jest.fn(({ x, y }) => 'x') };
+  });
+
+  test('Handles already missed spot', () => {
+    const player = Player();
+    const mockMiss = { receiveAttack: jest.fn(({ x, y }) => 'm') };
+    expect(player.attack({ x: 0, y: 0 }, mockMiss)).toBe('m');
+  });
+
+  test('Handles already successfuly hit spot', () => {
+    const player = Player();
+    const mockHit = { receiveAttack: jest.fn(({ x, y }) => 'x') };
+    expect(player.attack({ x: 0, y: 0 }, mockHit)).toBe('x');
+  });
+});
