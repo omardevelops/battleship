@@ -187,6 +187,16 @@ describe('Receive Attack function', () => {
       [3, 3, 0, 0, 0],
     ]);
   });
+
+  test('If hit previously missed spot, returns m', () => {
+    board.receiveAttack({ x: 4, y: 0 });
+    expect(board.receiveAttack({ x: 4, y: 0 })).toBe('m');
+  });
+
+  test('If hit previously successful hit spot, returns x', () => {
+    board.receiveAttack({ x: 1, y: 0 });
+    expect(board.receiveAttack({ x: 1, y: 0 })).toBe('x');
+  });
 });
 
 describe('Check if all ships are sunk', () => {

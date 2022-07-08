@@ -66,11 +66,8 @@ const Gameboard = (gridSize) => {
 
   const receiveAttack = ({ x, y }) => {
     const target = grid[y][x];
-    if (target === 'm' || target === 'x')
-      // If previously missed or already hit
-      throw new Error(
-        'Attack not allowed. This spot is previously missed or already hit.'
-      );
+    // If previously missed or already hit
+    if (target === 'm' || target === 'x') return target;
     else if (target !== 0) {
       // Hit ship in this case
       const targetShip = shipRegistry[target]; // Fetch Ship object
