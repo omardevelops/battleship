@@ -27,10 +27,6 @@ describe('Player Attack func', () => {
 });
 
 describe('Player Attack Func for already Missed/Hit spots', () => {
-  beforeEach(() => {
-    const mockHit = { receiveAttack: jest.fn(({ x, y }) => 'x') };
-  });
-
   test('Handles already missed spot', () => {
     const player = Player();
     const mockMiss = { receiveAttack: jest.fn(({ x, y }) => 'm') };
