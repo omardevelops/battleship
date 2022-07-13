@@ -31,9 +31,12 @@ const Gameboard = (gridSize) => {
     return true;
   };
 
-  const registerShip = (ship) => (shipRegistry[latestShipIndex++] = ship);
+  const registerShip = (ship) => {
+    shipRegistry[latestShipIndex] = ship;
+    latestShipIndex += 1;
+  };
   const initializeGrid = () => {
-    let size = !gridSize ? GRID_SIZE : gridSize;
+    const size = !gridSize ? GRID_SIZE : gridSize;
     for (let i = 0; i < size; i++) {
       const arr = [];
       for (let i = 0; i < size; i++) arr.push(0);

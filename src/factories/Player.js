@@ -1,9 +1,12 @@
 const Player = () => {
   let isComputerPlayer = false;
 
-  const attack = ({ x, y }, enemyBoard) => {
-    return enemyBoard.receiveAttack({ x, y });
+  const getIsComputer = () => isComputerPlayer;
+  const setIsComputer = (isComputer) => {
+    isComputerPlayer = isComputer;
   };
+
+  const attack = ({ x, y }, enemyBoard) => enemyBoard.receiveAttack({ x, y });
 
   const computerAttack = (enemyBoard) => {
     const gridSize = enemyBoard.grid.length;
@@ -12,7 +15,7 @@ const Player = () => {
     attack({ x, y }, enemyBoard);
   };
 
-  return { isComputerPlayer, attack, computerAttack };
+  return { getIsComputer, setIsComputer, attack, computerAttack };
 };
 
 export default Player;

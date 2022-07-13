@@ -4,7 +4,7 @@ const Ship = (len) => {
   let lives = len;
 
   const hit = () => {
-    lives--;
+    lives -= 1;
     return lives;
   };
   const isSunk = () => lives === 0;

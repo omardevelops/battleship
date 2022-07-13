@@ -3,7 +3,8 @@ import Player from '../factories/Player';
 describe('Player Attack func', () => {
   // Mock enemy board's receiveAttack function
   // Tests focus only on Player's public interface
-  let mockEnemyBoard, player;
+  let mockEnemyBoard;
+  let player;
   beforeEach(() => {
     mockEnemyBoard = { receiveAttack: jest.fn(({ x, y }) => {}) };
     player = Player();

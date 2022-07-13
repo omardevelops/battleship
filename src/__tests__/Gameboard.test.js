@@ -150,7 +150,8 @@ test('Placing ship longer than allowed throws (y-axis)', () => {
 });
 
 describe('Receive Attack function', () => {
-  let board, ships;
+  let board;
+  let ships;
   beforeEach(() => {
     board = Gameboard(5);
     ships = [Ship(4), Ship(3), Ship(2)];
@@ -200,7 +201,8 @@ describe('Receive Attack function', () => {
 });
 
 describe('Check if all ships are sunk', () => {
-  let board, ships;
+  let board;
+  let ships;
   beforeEach(() => {
     board = Gameboard(5);
     ships = [Ship(2), Ship(1), Ship(2)];
