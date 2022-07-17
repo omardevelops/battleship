@@ -36,3 +36,19 @@ body {
 .grid > *:hover {
   background-color: rgb(225, 225, 225);
 }
+
+button.empty {
+  background-color: white;
+}
+
+button.ship {
+  background-color: greenyellow;
+}
+
+button.miss {
+  background-color: gray;
+}
+
+button.hit {
+  background-color: red;
+}

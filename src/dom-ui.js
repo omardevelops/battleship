@@ -1,4 +1,4 @@
-import GRID_SIZE from './CONSTANTS';
+import { GRID_SIZE, gridXYMap } from './store';
 
 const grids = [
   document.querySelector('#player1-grid'),
@@ -15,8 +15,23 @@ const initializeGrids = () => {
   }
 };
 
+const updateBoardUI = (gridIndex, board, isEnemyBoard) => {
+  const gridDiv = grids[gridIndex];
+  const { grid } = board;
+  console.log(grid);
+  gridDiv.childNodes.forEach((slotDiv, index) => {
+    const pos = gridXYMap[index];
+    const slot = grid[pos.y][pos.x];
+    if (slot === 0) slotDiv.classList.add('empty');
+    else if (slot === 'x') slotDiv.classList.add('hit');
+    else if (slot === 'm') slotDiv.classList.add('miss');
+    else if (slot !== 0 && isEnemyBoard === false)
+      slotDiv.classList.add('ship');
+  });
+};
+
 const addListenerToEnemyBoard = (callback) => {
   grids[1].addEventListener('click', callback);
 };
 
-export { initializeGrids, addListenerToEnemyBoard };
+export { initializeGrids, addListenerToEnemyBoard, updateBoardUI };

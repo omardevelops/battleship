@@ -1,4 +1,4 @@
-import GRID_SIZE from '../CONSTANTS';
+import { GRID_SIZE } from '../store';
 
 const Gameboard = (gridSize) => {
   const shipRegistry = {}; // Keeps track of Ship objects by indexing them
@@ -20,12 +20,15 @@ const Gameboard = (gridSize) => {
     }
 
     // Checks the area in and around the ship. If not empty, returns false.
-    for (let y = startPos.y - 1; y <= startPos.y + 1; y++) {
+    for (let y = startPos.y - 1; y <= endPos.y + 1; y++) {
       // skip loop for out of range coordinate (edge cases)
       if (grid[y] !== undefined) {
         const row = grid[y];
-        for (let x = startPos.x - 1; x <= startPos.x + 1; x++) {
-          if (row[x] !== 0 && row[x] !== undefined) return false;
+        for (let x = startPos.x - 1; x <= endPos.x + 1; x++) {
+          if (startPos.y === 7 && startPos.x === 0) console.log({ x, y });
+          if (row[x] !== 0 && row[x] !== undefined)
+            // throw new Error('Ship cannot be placed near or on other ships.');
+            return false;
         }
       }
     }

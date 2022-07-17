@@ -113,6 +113,28 @@ test('Does not place a ship near preexisting ships (x-axis) ', () => {
   ]);
 });
 
+test('Does not place a ship near preexisting ships (x-axis) (2) ', () => {
+  const board = Gameboard(10);
+  board.registerShip(Ship(4));
+  board.registerShip(Ship(3));
+  board.registerShip(Ship(2));
+  board.placeShipOnGrid(1, { x: 0, y: 4 }, 'x');
+  board.placeShipOnGrid(2, { x: 2, y: 8 }, 'x');
+  board.placeShipOnGrid(3, { x: 0, y: 7 }, 'x'); // fix bug
+  expect(board.grid).toEqual([
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [1, 1, 1, 1, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 2, 2, 2, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  ]);
+});
+
 test('Placing ship out of bounds throws (x)', () => {
   const board = Gameboard(5); // 5x5 grid
   const ship = Ship(4);
