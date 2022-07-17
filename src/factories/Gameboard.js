@@ -1,4 +1,4 @@
-const GRID_SIZE = 10; // 10x10 grid size is standard
+import GRID_SIZE from '../CONSTANTS';
 const Gameboard = (gridSize) => {
   let shipRegistry = {}; // Keeps track of Ship objects by indexing them
   let latestShipIndex = 1;
