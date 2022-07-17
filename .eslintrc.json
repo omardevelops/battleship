@@ -12,6 +12,6 @@
   "rules": {
     "linebreak-style": "off",
     "no-unused-vars": "warn",
-    "allowForLoopAfterthoughts": true
+    "allowForLoopAfterthoughts": "off"
   }
 }
