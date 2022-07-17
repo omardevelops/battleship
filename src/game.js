@@ -1,8 +1,8 @@
 import { addListenerToEnemyBoard } from './dom-ui';
 import GRID_SIZE from './CONSTANTS';
-import Player from '../src/factories/Player.js';
-import Gameboard from '../src/factories/Gameboard.js';
-import Ship from '../src/factories/Ship.js';
+import Player from './factories/Player';
+import Gameboard from './factories/Gameboard';
+import Ship from './factories/Ship';
 
 const startGame = () => {
   // Setup game
