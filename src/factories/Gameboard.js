@@ -1,5 +1,3 @@
-import { getHostname } from 'webpack-dev-server';
-
 const GRID_SIZE = 10; // 10x10 grid size is standard
 const Gameboard = (gridSize) => {
   let shipRegistry = {}; // Keeps track of Ship objects by indexing them

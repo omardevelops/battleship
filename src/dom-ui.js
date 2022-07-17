@@ -13,8 +13,8 @@ const initializeGrids = () => {
   }
 };
 
-const addListenerToEnemyBoard = (event) => {
-  grids[1].addEventListener('click', event);
+const addListenerToEnemyBoard = (callback) => {
+  grids[1].addEventListener('click', callback);
 };
 
 export { initializeGrids, addListenerToEnemyBoard };
