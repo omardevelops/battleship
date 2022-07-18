@@ -47,6 +47,7 @@ const startGame = () => {
       const targetPos = gridXYMap[event.target.id];
       const targetValue = second.board.grid[targetPos.y][targetPos.x];
 
+      // Only allow if spot is fresh (not hit before)
       if (typeof targetValue === 'number') {
         first.player.attack(targetPos, second.board);
         updateBoardUI(1, second.board, true);
@@ -54,6 +55,7 @@ const startGame = () => {
         second.isTurn = true;
       }
 
+      // Second player logic
       if (second.isTurn) {
         let attkResult;
         // Loop until attacking a new spot
