@@ -33,9 +33,9 @@ body {
   border: none;
 }
 
-.grid > *:hover {
+/* .grid > *:hover {
   background-color: rgb(225, 225, 225);
-}
+} */
 
 button.empty {
   background-color: white;
@@ -43,6 +43,12 @@ button.empty {
 
 button.ship {
   background-color: greenyellow;
+}
+
+button.ship::after {
+  /* content: '⬤'; */
+  /* content: '✖'; */
+  font-size: 1.5rem;
 }
 
 button.miss {

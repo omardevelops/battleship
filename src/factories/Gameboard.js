@@ -25,7 +25,6 @@ const Gameboard = (gridSize) => {
       if (grid[y] !== undefined) {
         const row = grid[y];
         for (let x = startPos.x - 1; x <= endPos.x + 1; x++) {
-          if (startPos.y === 7 && startPos.x === 0) console.log({ x, y });
           if (row[x] !== 0 && row[x] !== undefined)
             // throw new Error('Ship cannot be placed near or on other ships.');
             return false;

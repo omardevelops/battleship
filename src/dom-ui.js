@@ -18,7 +18,6 @@ const initializeGrids = () => {
 const updateBoardUI = (gridIndex, board, isEnemyBoard) => {
   const gridDiv = grids[gridIndex];
   const { grid } = board;
-  console.log(grid);
   gridDiv.childNodes.forEach((slotDiv, index) => {
     const pos = gridXYMap[index];
     const slot = grid[pos.y][pos.x];
@@ -31,7 +30,9 @@ const updateBoardUI = (gridIndex, board, isEnemyBoard) => {
 };
 
 const addListenerToEnemyBoard = (callback) => {
-  grids[1].addEventListener('click', callback);
+  grids[1].childNodes.forEach((child) =>
+    child.addEventListener('click', callback)
+  );
 };
 
 export { initializeGrids, addListenerToEnemyBoard, updateBoardUI };
