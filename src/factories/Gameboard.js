@@ -70,6 +70,14 @@ const Gameboard = (gridSize) => {
     }
   };
 
+  const getSpotValue = ({ x, y }) => grid[y][x];
+
+  const isAttackingAllowed = ({ x, y }) => {
+    const target = getSpotValue({ x, y });
+    if (typeof target === 'number') return true;
+    return false;
+  };
+
   const receiveAttack = ({ x, y }) => {
     const target = grid[y][x];
     // If previously missed or already hit
@@ -103,6 +111,8 @@ const Gameboard = (gridSize) => {
     placeShipOnGrid,
     receiveAttack,
     isEveryShipSunk,
+    isAttackingAllowed,
+    getSpotValue,
   };
 };
 

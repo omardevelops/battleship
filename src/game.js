@@ -51,6 +51,10 @@ const startGame = () => {
       if (typeof targetValue === 'number') {
         first.player.attack(targetPos, second.board);
         updateBoardUI(1, second.board, true);
+        if (targetValue !== 0) {
+          if (second.board.isEveryShipSunk())
+            alert('Game over! Player 1 wins!');
+        }
         first.isTurn = false;
         second.isTurn = true;
       }
@@ -64,6 +68,10 @@ const startGame = () => {
         } while (typeof attkResult !== 'number');
         // Once new spot found, update UI and switch turns
         updateBoardUI(0, first.board, false);
+        // if (attkResult !== 0) {
+        //   if (first.board.isEveryShipSunk())
+        //     alert('Game over! Player 1 wins!');
+        // }
         first.isTurn = true;
         second.isTurn = false;
       }
