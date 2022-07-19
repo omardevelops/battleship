@@ -52,15 +52,15 @@ const startGame = () => {
         first.player.attack(targetPos, second.board);
         updateBoardUI(1, second.board, true);
 
+        first.isTurn = false;
+        second.isTurn = true;
+
         if (targetValue !== 0) {
           if (second.board.isEveryShipSunk()) {
             alert('Game over! Player 1 wins!');
             first.isTurn = false;
             second.isTurn = false;
           }
-        } else {
-          first.isTurn = false;
-          second.isTurn = true;
         }
       }
 
@@ -76,15 +76,15 @@ const startGame = () => {
         second.player.attack(target2, first.board);
         updateBoardUI(0, first.board, false);
 
+        first.isTurn = true;
+        second.isTurn = false;
+
         if (targetValue2 !== 0) {
           if (first.board.isEveryShipSunk()) {
             alert('Game over! Player 2 wins!');
             first.isTurn = false;
             second.isTurn = false;
           }
-        } else {
-          first.isTurn = true;
-          second.isTurn = false;
         }
       }
     }
