@@ -44,36 +44,39 @@ const startGame = () => {
   // Setup click event on enemy board
   addListenerToEnemyBoard((event) => {
     if (first.isTurn) {
-      const targetPos = gridXYMap[event.target.id];
-      const targetValue = second.board.grid[targetPos.y][targetPos.x];
+      const targetPos = gridXYMap[event.target.id]; // Get X and Y coordinates based on grid UI index
+      const targetValue = second.board.getSpotValue(targetPos); // Get value of gameboard spot
 
       // Only allow if spot is fresh (not hit before)
-      if (typeof targetValue === 'number') {
+      if (second.board.isAttackingAllowed(targetPos)) {
         first.player.attack(targetPos, second.board);
         updateBoardUI(1, second.board, true);
         if (targetValue !== 0) {
           if (second.board.isEveryShipSunk())
             alert('Game over! Player 1 wins!');
+        } else {
+          first.isTurn = false;
+          second.isTurn = true;
         }
-        first.isTurn = false;
-        second.isTurn = true;
       }
 
       // Second player logic
       if (second.isTurn) {
-        let attkResult;
-        // Loop until attacking a new spot
+        let target2;
+        // Loop until finding a valid spot
         do {
-          attkResult = second.player.computerAttack(first.board);
-        } while (typeof attkResult !== 'number');
-        // Once new spot found, update UI and switch turns
+          target2 = second.player.generateRandomXY();
+        } while (first.board.isAttackingAllowed(target2) === false);
+        // Once valid spot found, attack, update UI and switch turns
+        const targetValue2 = first.board.getSpotValue(target2);
+        second.player.attack(target2, first.board);
         updateBoardUI(0, first.board, false);
-        // if (attkResult !== 0) {
-        //   if (first.board.isEveryShipSunk())
-        //     alert('Game over! Player 1 wins!');
-        // }
-        first.isTurn = true;
-        second.isTurn = false;
+        if (targetValue2 !== 0) {
+          if (first.board.isEveryShipSunk()) alert('Game over! Player 2 wins!');
+        } else {
+          first.isTurn = true;
+          second.isTurn = false;
+        }
       }
     }
   });
