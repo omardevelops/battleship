@@ -327,3 +327,17 @@ test('Attacking not allowed for previously hit (missed) spot', () => {
   gameboard.receiveAttack({ x: 4, y: 4 });
   expect(gameboard.isAttackingAllowed({ x: 4, y: 4 })).toBe(false);
 });
+
+test('isShipOnSpot true case', () => {
+  const gameboard = Gameboard(5);
+  gameboard.registerShip(Ship(4));
+  gameboard.placeShipOnGrid(1, { x: 0, y: 0 }, 'y');
+  expect(gameboard.isShipOnSpot({ x: 0, y: 2 })).toBe(true);
+});
+
+test('isShipOnSpot false case', () => {
+  const gameboard = Gameboard(5);
+  gameboard.registerShip(Ship(4));
+  gameboard.placeShipOnGrid(1, { x: 0, y: 0 }, 'y');
+  expect(gameboard.isShipOnSpot({ x: 4, y: 4 })).toBe(false);
+});
