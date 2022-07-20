@@ -98,3 +98,15 @@ button.hit {
 #ship-placement .grid {
   display: grid;
 }
+
+button#axis {
+  border: 2px solid black;
+  font-size: 1.5rem;
+  padding: 5px 15px;
+  background-color: rgb(96, 215, 255);
+}
+
+button#axis:hover {
+  background-color: rgb(19, 157, 203);
+  color: white;
+}

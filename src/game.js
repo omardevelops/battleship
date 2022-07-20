@@ -24,19 +24,33 @@ const pregameSetup = () => {
       const position = gridXYMap[event.target.id];
       const ship = ships[currentShipIndex - 1];
       board.registerShip(ship, currentShipIndex);
-      const isPlaced = board.placeShipOnGrid(
-        currentShipIndex,
-        position,
-        currentAxis
-      );
-      if (isPlaced) {
-        currentShipIndex += 1;
-        updateBoardUI(2, board, false);
-        if (currentShipIndex - 1 !== ships.length)
-          updatePlacementStatus(ships[currentShipIndex - 1], currentShipIndex);
+
+      try {
+        const isPlaced = board.placeShipOnGrid(
+          currentShipIndex,
+          position,
+          currentAxis
+        );
+        if (isPlaced) {
+          currentShipIndex += 1;
+          updateBoardUI(2, board, false);
+          if (currentShipIndex - 1 !== ships.length)
+            updatePlacementStatus(
+              ships[currentShipIndex - 1],
+              currentShipIndex
+            );
+        } else {
+          alert(
+            'Cannot place ship here. Try another position that is at least 1 spot away from other ships.'
+          );
+        }
+      } catch (error) {
+        alert(error);
       }
     } else {
-      alert('No more ships left!');
+      alert(
+        'No more ships left! You can either reset the grid or start the game.'
+      );
     }
 
     console.log(board.grid);
