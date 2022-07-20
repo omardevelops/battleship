@@ -70,11 +70,14 @@ const Gameboard = (gridSize) => {
     }
   };
 
-  const getSpotValue = ({ x, y }) => grid[y][x];
+  const getSpotValue = ({ x, y }) => {
+    if (x >= grid.length || y >= grid.length || x < 0 || y < 0) return -1;
+    return grid[y][x];
+  };
 
   const isAttackingAllowed = ({ x, y }) => {
     const target = getSpotValue({ x, y });
-    if (typeof target === 'number') return true;
+    if (typeof target === 'number' && target !== -1) return true;
     return false;
   };
 

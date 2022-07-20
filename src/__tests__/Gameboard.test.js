@@ -298,6 +298,16 @@ test('Getting a grid spot value for hit spot', () => {
   expect(gameboard.getSpotValue({ x: 1, y: 4 })).toBe('x');
 });
 
+test('Getting a grid spot value for out of bounds spot', () => {
+  const gameboard = Gameboard(5);
+  expect(gameboard.getSpotValue({ x: 5, y: 5 })).toBe(-1);
+});
+
+test('Getting a grid spot value for out of bounds spot (2)', () => {
+  const gameboard = Gameboard(5);
+  expect(gameboard.getSpotValue({ x: -1, y: 5 })).toBe(-1);
+});
+
 test('Attacking allowed for empty spot', () => {
   const gameboard = Gameboard(5);
   gameboard.registerShip(Ship(4));
@@ -326,6 +336,21 @@ test('Attacking not allowed for previously hit (missed) spot', () => {
   gameboard.placeShipOnGrid(1, { x: 0, y: 0 }, 'y');
   gameboard.receiveAttack({ x: 4, y: 4 });
   expect(gameboard.isAttackingAllowed({ x: 4, y: 4 })).toBe(false);
+});
+
+test('Attacking not allowed for out of bounds spot', () => {
+  const gameboard = Gameboard(5);
+  expect(gameboard.isAttackingAllowed({ x: 5, y: 5 })).toBe(false);
+});
+
+test('Attacking not allowed for out of bounds spot (2)', () => {
+  const gameboard = Gameboard(5);
+  expect(gameboard.isAttackingAllowed({ x: -1, y: 0 })).toBe(false);
+});
+
+test('Attacking not allowed for out of bounds spot (3)', () => {
+  const gameboard = Gameboard(5);
+  expect(gameboard.isAttackingAllowed({ x: 0, y: -1 })).toBe(false);
 });
 
 test('isShipOnSpot true case', () => {
