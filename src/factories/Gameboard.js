@@ -34,9 +34,12 @@ const Gameboard = (gridSize) => {
     return true;
   };
 
-  const registerShip = (ship) => {
-    shipRegistry[latestShipIndex] = ship;
-    latestShipIndex += 1;
+  const registerShip = (ship, index) => {
+    if (index !== undefined) shipRegistry[index] = ship;
+    else {
+      shipRegistry[latestShipIndex] = ship;
+      latestShipIndex += 1;
+    }
   };
   const initializeGrid = () => {
     const size = !gridSize ? GRID_SIZE : gridSize;
@@ -67,7 +70,9 @@ const Gameboard = (gridSize) => {
         for (let i = startPos[axis]; i <= endPos[axis]; i++) {
           grid[i][startPos.x] = shipIndex;
         }
+      return true;
     }
+    return false;
   };
 
   const getSpotValue = ({ x, y }) => {

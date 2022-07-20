@@ -1,10 +1,56 @@
-import { addListenerToEnemyBoard, updateBoardUI } from './dom-ui';
+import {
+  addListenerToAxisButton,
+  addListenerToEnemyBoard,
+  addListenerToShipPlacement,
+  updateAxisButton,
+  updateBoardUI,
+  updatePlacementStatus,
+} from './dom-ui';
 import { GRID_SIZE, gridXYMap } from './store';
 import Player from './factories/Player';
 import Gameboard from './factories/Gameboard';
 import Ship from './factories/Ship';
 
-const pregameSetup = () => {};
+const ships = [Ship(5), Ship(4), Ship(3), Ship(3), Ship(2)];
+let currentShipIndex = 1;
+let currentAxis = 'x';
+
+const pregameSetup = () => {
+  updatePlacementStatus(ships[currentShipIndex - 1], currentShipIndex);
+  const board = Gameboard(GRID_SIZE);
+
+  addListenerToShipPlacement((event) => {
+    if (currentShipIndex - 1 !== ships.length) {
+      const position = gridXYMap[event.target.id];
+      const ship = ships[currentShipIndex - 1];
+      board.registerShip(ship, currentShipIndex);
+      const isPlaced = board.placeShipOnGrid(
+        currentShipIndex,
+        position,
+        currentAxis
+      );
+      if (isPlaced) {
+        currentShipIndex += 1;
+        updateBoardUI(2, board, false);
+        if (currentShipIndex - 1 !== ships.length)
+          updatePlacementStatus(ships[currentShipIndex - 1], currentShipIndex);
+      }
+    } else {
+      alert('No more ships left!');
+    }
+
+    console.log(board.grid);
+  });
+
+  addListenerToAxisButton(() => {
+    if (currentAxis === 'x') {
+      currentAxis = 'y';
+    } else {
+      currentAxis = 'x';
+    }
+    updateAxisButton(currentAxis);
+  });
+};
 
 const startGame = () => {
   // Setup game

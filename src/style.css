@@ -69,47 +69,30 @@ button.hit {
   background-color: red;
 }
 
+#ship-placement #headers {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+#ship-placement h1 {
+  font-weight: bold;
+  font-style: italic;
+  font-size: 1.5rem;
+  color: green;
+}
+
+#ship-placement h2 {
+  font-size: 1.2rem;
+}
+
 #ship-placement {
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
   gap: 30px;
   padding: 15px;
   flex-wrap: wrap;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-  gap: 15px;
-  width: 500px;
-}
-
-form > div {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 15px;
-}
-
-form fieldset {
-  border: 2px solid black;
-  padding: 15px;
-}
-
-form > button {
-  width: 200px;
-  border: 2px solid black;
-  padding: 8px;
-  font-weight: bold;
-}
-
-form input {
-  width: 50px;
 }
 
 #ship-placement .grid {

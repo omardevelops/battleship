@@ -32,10 +32,39 @@ const updateBoardUI = (gridIndex, board, isEnemyBoard) => {
   });
 };
 
+const updatePlacementStatus = (ship, index) => {
+  const header = document.querySelector('#headers > h1');
+  header.textContent = `Place Ship ${index} (${ship.length} slots)`;
+};
+
+const updateAxisButton = (axis) => {
+  const btn = document.querySelector('button#axis');
+  btn.textContent = `Axis: ${axis.toUpperCase()}`;
+};
+
 const addListenerToEnemyBoard = (callback) => {
   grids[1].childNodes.forEach((child) =>
     child.addEventListener('click', callback)
   );
 };
 
-export { initializeGrids, addListenerToEnemyBoard, updateBoardUI };
+const addListenerToShipPlacement = (callback) => {
+  grids[2].childNodes.forEach((child) => {
+    child.addEventListener('click', callback);
+  });
+};
+
+const addListenerToAxisButton = (callback) => {
+  const btn = document.querySelector('button#axis');
+  btn.addEventListener('click', callback);
+};
+
+export {
+  initializeGrids,
+  addListenerToEnemyBoard,
+  addListenerToShipPlacement,
+  addListenerToAxisButton,
+  updateBoardUI,
+  updatePlacementStatus,
+  updateAxisButton,
+};
