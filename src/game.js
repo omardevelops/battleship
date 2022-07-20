@@ -39,7 +39,6 @@ const startGame = () => {
   second.board.placeShipOnGrid(4, { x: 8, y: 0 }, 'y');
 
   updateBoardUI(0, first.board, false);
-  // updateBoardUI(1, second.board, true);
 
   // Setup click event on enemy board
   addListenerToEnemyBoard((event) => {
