@@ -6,6 +6,8 @@ const grids = [
   document.querySelector('#ship-placement .grid'),
 ];
 
+const form = document.querySelector('form');
+
 const initializeGrids = () => {
   for (let index = 0; index < GRID_SIZE * GRID_SIZE; index++) {
     grids.forEach((grid) => {
