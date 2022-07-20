@@ -99,10 +99,18 @@ button.hit {
   display: grid;
 }
 
-button#axis {
+button.menu {
   border: 2px solid black;
   font-size: 1.5rem;
   padding: 5px 15px;
+}
+
+button.menu:hover {
+  background-color: black;
+  color: white;
+}
+
+button#axis {
   background-color: rgb(96, 215, 255);
 }
 

@@ -1,6 +1,7 @@
 import {
   addListenerToAxisButton,
   addListenerToEnemyBoard,
+  addListenerToResetButton,
   addListenerToShipPlacement,
   updateAxisButton,
   updateBoardUI,
@@ -14,10 +15,19 @@ import Ship from './factories/Ship';
 const ships = [Ship(5), Ship(4), Ship(3), Ship(3), Ship(2)];
 let currentShipIndex = 1;
 let currentAxis = 'x';
+let board = null;
+
+const resetGrid = () => {
+  currentShipIndex = 1;
+  currentAxis = 'x';
+  board = Gameboard(GRID_SIZE);
+  updateAxisButton(currentAxis);
+  updateBoardUI(2, board, false);
+};
 
 const pregameSetup = () => {
   updatePlacementStatus(ships[currentShipIndex - 1], currentShipIndex);
-  const board = Gameboard(GRID_SIZE);
+  board = Gameboard(GRID_SIZE);
 
   addListenerToShipPlacement((event) => {
     if (currentShipIndex - 1 !== ships.length) {
@@ -64,6 +74,8 @@ const pregameSetup = () => {
     }
     updateAxisButton(currentAxis);
   });
+
+  addListenerToResetButton(resetGrid);
 };
 
 const startGame = () => {

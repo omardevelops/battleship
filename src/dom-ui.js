@@ -24,8 +24,10 @@ const updateBoardUI = (gridIndex, board, isEnemyBoard) => {
   gridDiv.childNodes.forEach((slotDiv, index) => {
     const pos = gridXYMap[index];
     const slot = grid[pos.y][pos.x];
-    if (slot === 0) slotDiv.classList.add('empty');
-    else if (slot === 'x') slotDiv.classList.add('hit');
+    slotDiv.classList = [];
+    if (slot === 0) {
+      slotDiv.classList.add('empty');
+    } else if (slot === 'x') slotDiv.classList.add('hit');
     else if (slot === 'm') slotDiv.classList.add('miss');
     else if (slot !== 0 && isEnemyBoard === false)
       slotDiv.classList.add('ship');
@@ -59,11 +61,23 @@ const addListenerToAxisButton = (callback) => {
   btn.addEventListener('click', callback);
 };
 
+const addListenerToResetButton = (callback) => {
+  const btn = document.querySelector('button#reset');
+  btn.addEventListener('click', callback);
+};
+
+const addListenerToStartButton = (callback) => {
+  const btn = document.querySelector('button#start');
+  btn.addEventListener('click', callback);
+};
+
 export {
   initializeGrids,
   addListenerToEnemyBoard,
   addListenerToShipPlacement,
   addListenerToAxisButton,
+  addListenerToResetButton,
+  addListenerToStartButton,
   updateBoardUI,
   updatePlacementStatus,
   updateAxisButton,
