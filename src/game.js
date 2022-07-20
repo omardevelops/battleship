@@ -74,6 +74,8 @@ const startGame = () => {
           } while (first.board.isAttackingAllowed(target2) === false);
         } else {
           // If there was a successful hit, get adjacent tiles
+          const adjacentTiles = first.board.getAdjacentCoords(previous);
+          console.log(adjacentTiles);
         }
         // Once valid spot found, attack, update UI and switch turns
         const isTargetShip2 = first.board.isShipOnSpot(target2);
