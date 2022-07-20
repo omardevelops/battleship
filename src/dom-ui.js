@@ -44,6 +44,16 @@ const updateAxisButton = (axis) => {
   btn.textContent = `Axis: ${axis.toUpperCase()}`;
 };
 
+const updateUIforStartGame = () => {
+  const h1 = document.querySelector('body > h1#placeship');
+  const shipPlacement = document.querySelector('#ship-placement');
+  const gridsContainer = document.querySelector('#grids-container');
+
+  h1.style.display = 'none';
+  shipPlacement.style.display = 'none';
+  gridsContainer.style.display = 'flex';
+};
+
 const addListenerToEnemyBoard = (callback) => {
   grids[1].childNodes.forEach((child) =>
     child.addEventListener('click', callback)
@@ -81,4 +91,5 @@ export {
   updateBoardUI,
   updatePlacementStatus,
   updateAxisButton,
+  updateUIforStartGame,
 };

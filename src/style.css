@@ -19,7 +19,7 @@ body > h1 {
 }
 
 #grids-container {
-  display: flex;
+  display: none;
   justify-content: center;
   flex-wrap: wrap;
   gap: 100px;
@@ -27,7 +27,6 @@ body > h1 {
 
 .grid {
   display: grid;
-  display: none;
   grid-template-columns: repeat(10, 1fr);
   width: fit-content;
   height: fit-content;

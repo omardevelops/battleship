@@ -3,9 +3,11 @@ import {
   addListenerToEnemyBoard,
   addListenerToResetButton,
   addListenerToShipPlacement,
+  addListenerToStartButton,
   updateAxisButton,
   updateBoardUI,
   updatePlacementStatus,
+  updateUIforStartGame,
 } from './dom-ui';
 import { GRID_SIZE, gridXYMap } from './store';
 import Player from './factories/Player';
@@ -16,67 +18,6 @@ const ships = [Ship(5), Ship(4), Ship(3), Ship(3), Ship(2)];
 let currentShipIndex = 1;
 let currentAxis = 'x';
 let board = null;
-
-const resetGrid = () => {
-  currentShipIndex = 1;
-  currentAxis = 'x';
-  board = Gameboard(GRID_SIZE);
-  updateAxisButton(currentAxis);
-  updateBoardUI(2, board, false);
-};
-
-const pregameSetup = () => {
-  updatePlacementStatus(ships[currentShipIndex - 1], currentShipIndex);
-  board = Gameboard(GRID_SIZE);
-
-  addListenerToShipPlacement((event) => {
-    if (currentShipIndex - 1 !== ships.length) {
-      const position = gridXYMap[event.target.id];
-      const ship = ships[currentShipIndex - 1];
-      board.registerShip(ship, currentShipIndex);
-
-      try {
-        const isPlaced = board.placeShipOnGrid(
-          currentShipIndex,
-          position,
-          currentAxis
-        );
-        if (isPlaced) {
-          currentShipIndex += 1;
-          updateBoardUI(2, board, false);
-          if (currentShipIndex - 1 !== ships.length)
-            updatePlacementStatus(
-              ships[currentShipIndex - 1],
-              currentShipIndex
-            );
-        } else {
-          alert(
-            'Cannot place ship here. Try another position that is at least 1 spot away from other ships.'
-          );
-        }
-      } catch (error) {
-        alert(error);
-      }
-    } else {
-      alert(
-        'No more ships left! You can either reset the grid or start the game.'
-      );
-    }
-
-    console.log(board.grid);
-  });
-
-  addListenerToAxisButton(() => {
-    if (currentAxis === 'x') {
-      currentAxis = 'y';
-    } else {
-      currentAxis = 'x';
-    }
-    updateAxisButton(currentAxis);
-  });
-
-  addListenerToResetButton(resetGrid);
-};
 
 const startGame = () => {
   // Setup game
@@ -93,14 +34,7 @@ const startGame = () => {
   second.player.setIsComputer(true); // 2nd player is Computer
 
   // Setup first player gameboard
-  first.board.registerShip(Ship(4));
-  first.board.registerShip(Ship(3));
-  first.board.registerShip(Ship(3));
-  first.board.registerShip(Ship(2));
-  first.board.placeShipOnGrid(1, { x: 0, y: 4 }, 'x');
-  first.board.placeShipOnGrid(2, { x: 2, y: 8 }, 'x');
-  first.board.placeShipOnGrid(3, { x: 6, y: 4 }, 'y');
-  first.board.placeShipOnGrid(4, { x: 7, y: 0 }, 'y');
+  first.board = board;
 
   // Setup second player gameboard
   second.board.registerShip(Ship(4));
@@ -189,6 +123,79 @@ const startGame = () => {
           second.player.setPreviousHit(null);
         }
       }
+    }
+  });
+};
+
+const resetGrid = () => {
+  currentShipIndex = 1;
+  currentAxis = 'x';
+  board = Gameboard(GRID_SIZE);
+  updateAxisButton(currentAxis);
+  updateBoardUI(2, board, false);
+};
+
+const pregameSetup = () => {
+  updatePlacementStatus(ships[currentShipIndex - 1], currentShipIndex);
+  board = Gameboard(GRID_SIZE);
+
+  addListenerToShipPlacement((event) => {
+    if (currentShipIndex - 1 !== ships.length) {
+      const position = gridXYMap[event.target.id];
+      const ship = ships[currentShipIndex - 1];
+      board.registerShip(ship, currentShipIndex);
+
+      try {
+        const isPlaced = board.placeShipOnGrid(
+          currentShipIndex,
+          position,
+          currentAxis
+        );
+        if (isPlaced) {
+          currentShipIndex += 1;
+          updateBoardUI(2, board, false);
+          if (currentShipIndex - 1 !== ships.length)
+            updatePlacementStatus(
+              ships[currentShipIndex - 1],
+              currentShipIndex
+            );
+        } else {
+          alert(
+            'Cannot place ship here. Try another position that is at least 1 spot away from other ships.'
+          );
+        }
+      } catch (error) {
+        alert(error);
+      }
+    } else {
+      alert(
+        'No more ships left! You can either reset the grid or start the game.'
+      );
+    }
+
+    console.log(board.grid);
+  });
+
+  addListenerToAxisButton(() => {
+    if (currentAxis === 'x') {
+      currentAxis = 'y';
+    } else {
+      currentAxis = 'x';
+    }
+    updateAxisButton(currentAxis);
+  });
+
+  addListenerToResetButton(resetGrid);
+  addListenerToStartButton(() => {
+    if (currentShipIndex - 1 === ships.length) {
+      updateUIforStartGame();
+      startGame();
+    } else {
+      alert(
+        `You still have ${
+          ships.length - currentShipIndex + 1
+        } ships left to place`
+      );
     }
   });
 };
