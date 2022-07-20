@@ -66,10 +66,33 @@ const startGame = () => {
       // Second player logic
       if (second.isTurn) {
         let target2;
-        // Loop until finding a valid spot
-        do {
-          target2 = second.player.generateRandomXY();
-        } while (first.board.isAttackingAllowed(target2) === false);
+        const previous = second.player.getPreviousHit();
+        if (previous === null) {
+          // Loop until randomly finding a valid spot
+          do {
+            target2 = second.player.generateRandomXY();
+          } while (first.board.isAttackingAllowed(target2) === false);
+        } else {
+          // If there was a successful hit, get adjacent tiles
+          const adjacentTiles = first.board.getAdjacentCoords(previous);
+          const targetable = []; // Only target targetable tiles (allowed attk)
+
+          adjacentTiles.forEach((tilePos) => {
+            if (first.board.isAttackingAllowed(tilePos))
+              targetable.push(tilePos);
+          });
+          // Choose one random targetable spot
+          if (targetable.length !== 0) {
+            const targetIndex = Math.floor(Math.random() * targetable.length);
+            target2 = targetable[targetIndex];
+            console.log(targetable);
+            console.log(target2);
+          } else {
+            do {
+              target2 = second.player.generateRandomXY();
+            } while (first.board.isAttackingAllowed(target2) === false);
+          }
+        }
         // Once valid spot found, attack, update UI and switch turns
         const isTargetShip2 = first.board.isShipOnSpot(target2);
         second.player.attack(target2, first.board);
@@ -79,11 +102,17 @@ const startGame = () => {
         second.isTurn = false;
 
         if (isTargetShip2) {
+          // If ship, means successful hit, so update previouslyHit for smart AI
+          second.player.setPreviousHit({ x: target2.x, y: target2.y });
+          console.log(target2);
           if (first.board.isEveryShipSunk()) {
             alert('Game over! Player 2 wins!');
             first.isTurn = false;
             second.isTurn = false;
           }
+        } else {
+          // Missed, set previousHit to null
+          second.player.setPreviousHit(null);
         }
       }
     }

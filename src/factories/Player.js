@@ -2,10 +2,16 @@ import { GRID_SIZE } from '../store';
 
 const Player = () => {
   let isComputerPlayer = false;
+  let previousHit = null;
 
   const getIsComputer = () => isComputerPlayer;
   const setIsComputer = (isComputer) => {
     isComputerPlayer = isComputer;
+  };
+
+  const getPreviousHit = () => previousHit;
+  const setPreviousHit = (position) => {
+    previousHit = position;
   };
 
   const attack = ({ x, y }, enemyBoard) => enemyBoard.receiveAttack({ x, y });
@@ -24,6 +30,8 @@ const Player = () => {
   return {
     getIsComputer,
     setIsComputer,
+    getPreviousHit,
+    setPreviousHit,
     attack,
     computerAttack,
     generateRandomXY,

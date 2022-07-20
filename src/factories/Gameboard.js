@@ -75,6 +75,15 @@ const Gameboard = (gridSize) => {
     return grid[y][x];
   };
 
+  const getAdjacentCoords = ({ x, y }) => {
+    const list = [];
+    if (x - 1 > -1) list.push({ x: x - 1, y });
+    if (y - 1 > -1) list.push({ x, y: y - 1 });
+    if (x + 1 < grid.length) list.push({ x: x + 1, y });
+    if (y + 1 < grid.length) list.push({ x, y: y + 1 });
+    return list;
+  };
+
   const isAttackingAllowed = ({ x, y }) => {
     const target = getSpotValue({ x, y });
     if (typeof target === 'number' && target !== -1) return true;
@@ -123,6 +132,7 @@ const Gameboard = (gridSize) => {
     isAttackingAllowed,
     getSpotValue,
     isShipOnSpot,
+    getAdjacentCoords,
   };
 };
 
