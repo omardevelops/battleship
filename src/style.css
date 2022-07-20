@@ -1,6 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
 body {
+  font-family: 'Roboto', sans-serif;
+  text-align: center;
+}
+
+body > h1 {
+  font-size: 2rem;
+  margin-bottom: 30px;
+  font-weight: bold;
 }
 
 #logo {
@@ -19,8 +27,10 @@ body {
 
 .grid {
   display: grid;
+  display: none;
   grid-template-columns: repeat(10, 1fr);
   width: fit-content;
+  height: fit-content;
   background-color: black;
   gap: 2px;
   border: 2px solid black;
@@ -57,4 +67,51 @@ button.miss {
 
 button.hit {
   background-color: red;
+}
+
+#ship-placement {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  padding: 15px;
+  flex-wrap: wrap;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  width: 500px;
+}
+
+form > div {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+form fieldset {
+  border: 2px solid black;
+  padding: 15px;
+}
+
+form > button {
+  width: 200px;
+  border: 2px solid black;
+  padding: 8px;
+  font-weight: bold;
+}
+
+form input {
+  width: 50px;
+}
+
+#ship-placement .grid {
+  display: grid;
 }

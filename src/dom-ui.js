@@ -3,6 +3,7 @@ import { GRID_SIZE, gridXYMap } from './store';
 const grids = [
   document.querySelector('#player1-grid'),
   document.querySelector('#player2-grid'),
+  document.querySelector('#ship-placement .grid'),
 ];
 
 const initializeGrids = () => {

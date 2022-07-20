@@ -4,6 +4,8 @@ import Player from './factories/Player';
 import Gameboard from './factories/Gameboard';
 import Ship from './factories/Ship';
 
+const pregameSetup = () => {};
+
 const startGame = () => {
   // Setup game
   const first = {
@@ -119,4 +121,4 @@ const startGame = () => {
   });
 };
 
-export default startGame;
+export { pregameSetup, startGame };
