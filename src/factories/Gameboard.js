@@ -1,10 +1,9 @@
-import { getHostname } from 'webpack-dev-server';
+import { GRID_SIZE } from '../store';
 
-const GRID_SIZE = 10; // 10x10 grid size is standard
 const Gameboard = (gridSize) => {
-  let shipRegistry = {}; // Keeps track of Ship objects by indexing them
+  const shipRegistry = {}; // Keeps track of Ship objects by indexing them
   let latestShipIndex = 1;
-  let grid = []; // multi dimensional array when initialized
+  const grid = []; // multi dimensional array when initialized
 
   const isPlacingShipAllowed = (shipLength, startPos, endPos, axis) => {
     if (startPos.y >= grid.length)
@@ -21,11 +20,15 @@ const Gameboard = (gridSize) => {
     }
 
     // Checks the area in and around the ship. If not empty, returns false.
-    for (let y = startPos.y - 1; y <= startPos.y + 1; y++) {
-      if (grid[y] === undefined) continue; // skip loop for out of range coordinate (edge cases)
-      let row = grid[y];
-      for (let x = startPos.x - 1; x <= startPos.x + 1; x++) {
-        if (row[x] !== 0 && row[x] !== undefined) return false;
+    for (let y = startPos.y - 1; y <= endPos.y + 1; y++) {
+      // skip loop for out of range coordinate (edge cases)
+      if (grid[y] !== undefined) {
+        const row = grid[y];
+        for (let x = startPos.x - 1; x <= endPos.x + 1; x++) {
+          if (row[x] !== 0 && row[x] !== undefined)
+            // throw new Error('Ship cannot be placed near or on other ships.');
+            return false;
+        }
       }
     }
     return true;
@@ -39,13 +42,13 @@ const Gameboard = (gridSize) => {
     const size = !gridSize ? GRID_SIZE : gridSize;
     for (let i = 0; i < size; i++) {
       const arr = [];
-      for (let i = 0; i < size; i++) arr.push(0);
+      for (let j = 0; j < size; j++) arr.push(0);
       grid.push(arr); // 0 indicates empty spot
     }
   };
   const placeShipOnGrid = (shipIndex, startPos, axis) => {
     const ship = shipRegistry[shipIndex];
-    let endPos = {};
+    const endPos = {};
 
     if (axis === 'x') {
       endPos.y = startPos.y;
@@ -67,11 +70,24 @@ const Gameboard = (gridSize) => {
     }
   };
 
+  const getSpotValue = ({ x, y }) => grid[y][x];
+
+  const isAttackingAllowed = ({ x, y }) => {
+    const target = getSpotValue({ x, y });
+    if (typeof target === 'number') return true;
+    return false;
+  };
+
+  const isShipOnSpot = ({ x, y }) => {
+    const target = getSpotValue({ x, y });
+    if (target !== 0 && typeof target === 'number') return true;
+    return false;
+  };
+
   const receiveAttack = ({ x, y }) => {
     const target = grid[y][x];
     // If previously missed or already hit
-    if (target === 'm' || target === 'x') return target;
-    else if (target !== 0) {
+    if (target !== 'm' && target !== 'x' && target !== 0) {
       // Hit ship in this case
       const targetShip = shipRegistry[target]; // Fetch Ship object
       targetShip.hit(); // Register hit in object
@@ -80,6 +96,7 @@ const Gameboard = (gridSize) => {
       // Otherwise missed
       grid[y][x] = 'm'; // Update grid
     }
+    return target;
   };
 
   const isEveryShipSunk = () => {
@@ -100,6 +117,9 @@ const Gameboard = (gridSize) => {
     placeShipOnGrid,
     receiveAttack,
     isEveryShipSunk,
+    isAttackingAllowed,
+    getSpotValue,
+    isShipOnSpot,
   };
 };
 

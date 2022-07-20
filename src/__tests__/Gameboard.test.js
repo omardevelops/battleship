@@ -113,6 +113,28 @@ test('Does not place a ship near preexisting ships (x-axis) ', () => {
   ]);
 });
 
+test('Does not place a ship near preexisting ships (x-axis) (2) ', () => {
+  const board = Gameboard(10);
+  board.registerShip(Ship(4));
+  board.registerShip(Ship(3));
+  board.registerShip(Ship(2));
+  board.placeShipOnGrid(1, { x: 0, y: 4 }, 'x');
+  board.placeShipOnGrid(2, { x: 2, y: 8 }, 'x');
+  board.placeShipOnGrid(3, { x: 0, y: 7 }, 'x'); // fix bug
+  expect(board.grid).toEqual([
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [1, 1, 1, 1, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 2, 2, 2, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  ]);
+});
+
 test('Placing ship out of bounds throws (x)', () => {
   const board = Gameboard(5); // 5x5 grid
   const ship = Ship(4);
@@ -243,4 +265,95 @@ describe('Check if all ships are sunk', () => {
     coords.forEach((coord) => board.receiveAttack(coord));
     expect(board.isEveryShipSunk()).toBe(false);
   });
+});
+
+test('Getting a grid spot value for empty spot', () => {
+  const gameboard = Gameboard(5);
+  expect(gameboard.getSpotValue({ x: 1, y: 1 })).toBe(0);
+});
+
+test('Getting a grid spot value for spot with ship', () => {
+  const gameboard = Gameboard(5);
+  gameboard.registerShip(Ship(4));
+  gameboard.registerShip(Ship(4));
+  gameboard.placeShipOnGrid(2, { x: 1, y: 1 }, 'y');
+  expect(gameboard.getSpotValue({ x: 1, y: 4 })).toBe(2);
+});
+
+test('Getting a grid spot value for missed spot', () => {
+  const gameboard = Gameboard(5);
+  gameboard.registerShip(Ship(4));
+  gameboard.registerShip(Ship(4));
+  gameboard.placeShipOnGrid(2, { x: 1, y: 1 }, 'y');
+  gameboard.receiveAttack({ x: 4, y: 4 });
+  expect(gameboard.getSpotValue({ x: 4, y: 4 })).toBe('m');
+});
+
+test('Getting a grid spot value for hit spot', () => {
+  const gameboard = Gameboard(5);
+  gameboard.registerShip(Ship(4));
+  gameboard.registerShip(Ship(4));
+  gameboard.placeShipOnGrid(2, { x: 1, y: 1 }, 'y');
+  gameboard.receiveAttack({ x: 1, y: 4 });
+  expect(gameboard.getSpotValue({ x: 1, y: 4 })).toBe('x');
+});
+
+test('Attacking allowed for empty spot', () => {
+  const gameboard = Gameboard(5);
+  gameboard.registerShip(Ship(4));
+  gameboard.placeShipOnGrid(1, { x: 0, y: 0 }, 'y');
+  expect(gameboard.isAttackingAllowed({ x: 2, y: 2 })).toBe(true);
+});
+
+test('Attacking allowed for spot with ship', () => {
+  const gameboard = Gameboard(5);
+  gameboard.registerShip(Ship(4));
+  gameboard.placeShipOnGrid(1, { x: 0, y: 0 }, 'y');
+  expect(gameboard.isAttackingAllowed({ x: 0, y: 2 })).toBe(true);
+});
+
+test('Attacking not allowed for previously hit spot', () => {
+  const gameboard = Gameboard(5);
+  gameboard.registerShip(Ship(4));
+  gameboard.placeShipOnGrid(1, { x: 0, y: 0 }, 'y');
+  gameboard.receiveAttack({ x: 0, y: 2 });
+  expect(gameboard.isAttackingAllowed({ x: 0, y: 2 })).toBe(false);
+});
+
+test('Attacking not allowed for previously hit (missed) spot', () => {
+  const gameboard = Gameboard(5);
+  gameboard.registerShip(Ship(4));
+  gameboard.placeShipOnGrid(1, { x: 0, y: 0 }, 'y');
+  gameboard.receiveAttack({ x: 4, y: 4 });
+  expect(gameboard.isAttackingAllowed({ x: 4, y: 4 })).toBe(false);
+});
+
+test('isShipOnSpot true case', () => {
+  const gameboard = Gameboard(5);
+  gameboard.registerShip(Ship(4));
+  gameboard.placeShipOnGrid(1, { x: 0, y: 0 }, 'y');
+  expect(gameboard.isShipOnSpot({ x: 0, y: 2 })).toBe(true);
+});
+
+test('isShipOnSpot false case', () => {
+  const gameboard = Gameboard(5);
+  gameboard.registerShip(Ship(4));
+  gameboard.placeShipOnGrid(1, { x: 0, y: 0 }, 'y');
+  expect(gameboard.isShipOnSpot({ x: 4, y: 4 })).toBe(false);
+});
+
+test('isShipOnSpot false case on hit', () => {
+  const gameboard = Gameboard(5);
+  gameboard.registerShip(Ship(4));
+  gameboard.placeShipOnGrid(1, { x: 0, y: 0 }, 'y');
+  gameboard.receiveAttack({ x: 0, y: 0 });
+  expect(gameboard.isShipOnSpot({ x: 0, y: 0 })).toBe(false);
+});
+
+test('isShipOnSpot false case on miss', () => {
+  const gameboard = Gameboard(5);
+  gameboard.registerShip(Ship(4));
+  gameboard.placeShipOnGrid(1, { x: 0, y: 0 }, 'y');
+  gameboard.receiveAttack({ x: 4, y: 4 });
+  expect(gameboard.isShipOnSpot({ x: 4, y: 4 })).toBe(false);
 });
