@@ -46,7 +46,6 @@ const startGame = () => {
     if (first.isTurn) {
       const targetPos = gridXYMap[event.target.id]; // Get X and Y coordinates based on grid UI index
       const isTargetShip = second.board.isShipOnSpot(targetPos);
-      // const targetValue = second.board.getSpotValue(targetPos); // Get value of gameboard spot
 
       // Only allow if spot is fresh (not hit before)
       if (second.board.isAttackingAllowed(targetPos)) {
@@ -73,7 +72,6 @@ const startGame = () => {
           target2 = second.player.generateRandomXY();
         } while (first.board.isAttackingAllowed(target2) === false);
         // Once valid spot found, attack, update UI and switch turns
-        // const targetValue2 = first.board.getSpotValue(target2);
         const isTargetShip2 = first.board.isShipOnSpot(target2);
         second.player.attack(target2, first.board);
         updateBoardUI(0, first.board, false);

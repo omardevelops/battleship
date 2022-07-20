@@ -341,3 +341,19 @@ test('isShipOnSpot false case', () => {
   gameboard.placeShipOnGrid(1, { x: 0, y: 0 }, 'y');
   expect(gameboard.isShipOnSpot({ x: 4, y: 4 })).toBe(false);
 });
+
+test('isShipOnSpot false case on hit', () => {
+  const gameboard = Gameboard(5);
+  gameboard.registerShip(Ship(4));
+  gameboard.placeShipOnGrid(1, { x: 0, y: 0 }, 'y');
+  gameboard.receiveAttack({ x: 0, y: 0 });
+  expect(gameboard.isShipOnSpot({ x: 0, y: 0 })).toBe(false);
+});
+
+test('isShipOnSpot false case on miss', () => {
+  const gameboard = Gameboard(5);
+  gameboard.registerShip(Ship(4));
+  gameboard.placeShipOnGrid(1, { x: 0, y: 0 }, 'y');
+  gameboard.receiveAttack({ x: 4, y: 4 });
+  expect(gameboard.isShipOnSpot({ x: 4, y: 4 })).toBe(false);
+});
