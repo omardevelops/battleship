@@ -75,7 +75,23 @@ const startGame = () => {
         } else {
           // If there was a successful hit, get adjacent tiles
           const adjacentTiles = first.board.getAdjacentCoords(previous);
-          console.log(adjacentTiles);
+          const targetable = []; // Only target targetable tiles (allowed attk)
+
+          adjacentTiles.forEach((tilePos) => {
+            if (first.board.isAttackingAllowed(tilePos))
+              targetable.push(tilePos);
+          });
+          // Choose one random targetable spot
+          if (targetable.length !== 0) {
+            const targetIndex = Math.floor(Math.random() * targetable.length);
+            target2 = targetable[targetIndex];
+            console.log(targetable);
+            console.log(target2);
+          } else {
+            do {
+              target2 = second.player.generateRandomXY();
+            } while (first.board.isAttackingAllowed(target2) === false);
+          }
         }
         // Once valid spot found, attack, update UI and switch turns
         const isTargetShip2 = first.board.isShipOnSpot(target2);
