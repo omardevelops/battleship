@@ -382,3 +382,65 @@ test('isShipOnSpot false case on miss', () => {
   gameboard.receiveAttack({ x: 4, y: 4 });
   expect(gameboard.isShipOnSpot({ x: 4, y: 4 })).toBe(false);
 });
+
+describe('getAdjacentCoords func', () => {
+  let board;
+  beforeEach(() => {
+    board = Gameboard(5);
+  });
+
+  test('Center position', () => {
+    expect(board.getAdjacentCoords({ x: 2, y: 2 })).toEqual([
+      { x: 1, y: 2 },
+      { x: 2, y: 1 },
+      { x: 3, y: 2 },
+      { x: 2, y: 3 },
+    ]);
+  });
+
+  test('Left edge position', () => {
+    expect(board.getAdjacentCoords({ x: 0, y: 2 })).toEqual([
+      { x: 0, y: 1 },
+      { x: 1, y: 2 },
+      { x: 0, y: 3 },
+    ]);
+  });
+
+  test('Top edge position', () => {
+    expect(board.getAdjacentCoords({ x: 2, y: 0 })).toEqual([
+      { x: 1, y: 0 },
+      { x: 3, y: 0 },
+      { x: 2, y: 1 },
+    ]);
+  });
+
+  test('Right edge position', () => {
+    expect(board.getAdjacentCoords({ x: 4, y: 2 })).toEqual([
+      { x: 3, y: 2 },
+      { x: 4, y: 1 },
+      { x: 4, y: 3 },
+    ]);
+  });
+
+  test('Bottom edge position', () => {
+    expect(board.getAdjacentCoords({ x: 2, y: 4 })).toEqual([
+      { x: 1, y: 4 },
+      { x: 2, y: 3 },
+      { x: 3, y: 4 },
+    ]);
+  });
+
+  test('Top left corner edge position', () => {
+    expect(board.getAdjacentCoords({ x: 0, y: 0 })).toEqual([
+      { x: 1, y: 0 },
+      { x: 0, y: 1 },
+    ]);
+  });
+
+  test('Bottom right corner edge position', () => {
+    expect(board.getAdjacentCoords({ x: 4, y: 4 })).toEqual([
+      { x: 3, y: 4 },
+      { x: 4, y: 3 },
+    ]);
+  });
+});
