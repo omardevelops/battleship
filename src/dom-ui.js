@@ -44,6 +44,32 @@ const updateAxisButton = (axis) => {
   btn.textContent = `Axis: ${axis.toUpperCase()}`;
 };
 
+// Runs at the end of the game to show the restart button
+const updateEndgameUI = () => {
+  const restartBtn = document.querySelector('button#restart');
+  restartBtn.style.display = 'block';
+};
+// Runs when attempting a restart of the game. Does a complete reset of all UI.
+const updateRestartGameUI = () => {
+  // Remove all grid slots in DOM
+  grids.forEach((grid) => {
+    const children = Array.from(grid.children);
+    children.forEach((child) => child.remove());
+  });
+
+  const h1 = document.querySelector('body > h1#placeship');
+  const shipPlacement = document.querySelector('#ship-placement');
+  const gridsContainer = document.querySelector('#grids-container');
+  const restartBtn = document.querySelector('button#restart');
+
+  h1.style.display = 'inline';
+  shipPlacement.style.display = 'flex';
+  gridsContainer.style.display = 'none';
+  restartBtn.style.display = 'none';
+
+  initializeGrids();
+};
+
 const updateUIforStartGame = () => {
   const h1 = document.querySelector('body > h1#placeship');
   const shipPlacement = document.querySelector('#ship-placement');
@@ -81,6 +107,11 @@ const addListenerToStartButton = (callback) => {
   btn.addEventListener('click', callback);
 };
 
+const addListenerToRestartButton = (callback) => {
+  const btn = document.querySelector('button#restart');
+  btn.addEventListener('click', callback);
+};
+
 export {
   initializeGrids,
   addListenerToEnemyBoard,
@@ -88,8 +119,11 @@ export {
   addListenerToAxisButton,
   addListenerToResetButton,
   addListenerToStartButton,
+  addListenerToRestartButton,
   updateBoardUI,
   updatePlacementStatus,
   updateAxisButton,
+  updateEndgameUI,
+  updateRestartGameUI,
   updateUIforStartGame,
 };

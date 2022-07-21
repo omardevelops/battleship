@@ -2,11 +2,15 @@ import {
   addListenerToAxisButton,
   addListenerToEnemyBoard,
   addListenerToResetButton,
+  addListenerToRestartButton,
   addListenerToShipPlacement,
   addListenerToStartButton,
+  initializeGrids,
   updateAxisButton,
   updateBoardUI,
+  updateEndgameUI,
   updatePlacementStatus,
+  updateRestartGameUI,
   updateUIforStartGame,
 } from './dom-ui';
 import { GRID_SIZE, gridXYMap } from './store';
@@ -14,10 +18,11 @@ import Player from './factories/Player';
 import Gameboard from './factories/Gameboard';
 import Ship from './factories/Ship';
 
-const ships = [Ship(5), Ship(4), Ship(3), Ship(3), Ship(2)];
+let ships = [Ship(5), Ship(4), Ship(3), Ship(3), Ship(2)];
 let currentShipIndex = 1;
 let currentAxis = 'x';
 let board = null;
+let isFirstTime = true; // For adding event listeners to buttons only once
 
 // Creates and returns a gameboard with random ship placement
 const genRandomEnemyBoard = () => {
@@ -37,10 +42,8 @@ const genRandomEnemyBoard = () => {
     } catch (error) {
       isPlaced = false;
     }
-    console.log(`${startPos} ${axis} ${isPlaced}`);
     if (isPlaced) shipIndex += 1;
   } while (isPlaced === false || shipIndex !== 6);
-  console.log(randomBoard.grid);
   return randomBoard;
 };
 
@@ -60,11 +63,14 @@ const startGame = () => {
 
   // Setup first player gameboard
   first.board = board;
+  console.log(board.grid);
 
   // Setup second player gameboard
   second.board = genRandomEnemyBoard();
 
   updateBoardUI(0, first.board, false);
+
+  updateEndgameUI();
 
   // Setup click event on enemy board
   addListenerToEnemyBoard((event) => {
@@ -85,6 +91,7 @@ const startGame = () => {
             alert('Game over! Player 1 wins!');
             first.isTurn = false;
             second.isTurn = false;
+            updateEndgameUI();
           }
         }
       }
@@ -111,8 +118,6 @@ const startGame = () => {
           if (targetable.length !== 0) {
             const targetIndex = Math.floor(Math.random() * targetable.length);
             target2 = targetable[targetIndex];
-            console.log(targetable);
-            console.log(target2);
           } else {
             do {
               target2 = second.player.generateRandomXY();
@@ -130,11 +135,11 @@ const startGame = () => {
         if (isTargetShip2) {
           // If ship, means successful hit, so update previouslyHit for smart AI
           second.player.setPreviousHit({ x: target2.x, y: target2.y });
-          console.log(target2);
           if (first.board.isEveryShipSunk()) {
             alert('Game over! Player 2 wins!');
             first.isTurn = false;
             second.isTurn = false;
+            updateEndgameUI();
           }
         } else {
           // Missed, set previousHit to null
@@ -155,6 +160,7 @@ const resetGrid = () => {
 };
 
 const pregameSetup = () => {
+  ships = [Ship(5), Ship(4), Ship(3), Ship(3), Ship(2)];
   updatePlacementStatus(ships[currentShipIndex - 1], currentShipIndex);
   board = Gameboard(GRID_SIZE);
 
@@ -191,32 +197,38 @@ const pregameSetup = () => {
         'No more ships left! You can either reset the grid or start the game.'
       );
     }
-
-    console.log(board.grid);
   });
 
-  addListenerToAxisButton(() => {
-    if (currentAxis === 'x') {
-      currentAxis = 'y';
-    } else {
-      currentAxis = 'x';
-    }
-    updateAxisButton(currentAxis);
-  });
+  if (isFirstTime) {
+    addListenerToAxisButton(() => {
+      if (currentAxis === 'x') {
+        currentAxis = 'y';
+      } else {
+        currentAxis = 'x';
+      }
+      updateAxisButton(currentAxis);
+    });
 
-  addListenerToResetButton(resetGrid);
-  addListenerToStartButton(() => {
-    if (currentShipIndex - 1 === ships.length) {
-      updateUIforStartGame();
-      startGame();
-    } else {
-      alert(
-        `You still have ${
-          ships.length - currentShipIndex + 1
-        } ships left to place`
-      );
-    }
-  });
+    addListenerToResetButton(resetGrid);
+    addListenerToStartButton(() => {
+      if (currentShipIndex - 1 === ships.length) {
+        updateUIforStartGame();
+        startGame();
+      } else {
+        alert(
+          `You still have ${
+            ships.length - currentShipIndex + 1
+          } ships left to place`
+        );
+      }
+    });
+    addListenerToRestartButton(() => {
+      updateRestartGameUI();
+      resetGrid();
+      pregameSetup();
+    });
+    isFirstTime = false;
+  }
 };
 
 export { pregameSetup, startGame };

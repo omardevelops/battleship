@@ -7,7 +7,6 @@ body {
 
 body > h1 {
   font-size: 2rem;
-  margin-bottom: 30px;
   font-weight: bold;
 }
 
@@ -116,4 +115,9 @@ button#axis {
 button#axis:hover {
   background-color: rgb(19, 157, 203);
   color: white;
+}
+
+button#restart {
+  display: none;
+  margin: 30px auto;
 }
