@@ -132,6 +132,7 @@ const resetGrid = () => {
   currentAxis = 'x';
   board = Gameboard(GRID_SIZE);
   updateAxisButton(currentAxis);
+  updatePlacementStatus(ships[0], 1);
   updateBoardUI(2, board, false);
 };
 
