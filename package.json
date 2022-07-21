@@ -42,6 +42,7 @@
     }
   },
   "dependencies": {
-    "@types/jest": "^28.1.4"
+    "@types/jest": "^28.1.4",
+    "sweetalert2": "^11.4.23"
   }
 }

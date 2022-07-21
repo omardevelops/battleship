@@ -1,3 +1,4 @@
+import Swal from 'sweetalert2';
 import {
   addListenerToAxisButton,
   addListenerToEnemyBoard,
@@ -88,7 +89,10 @@ const startGame = () => {
 
         if (isTargetShip) {
           if (second.board.isEveryShipSunk()) {
-            alert('Game over! Player 1 wins!');
+            Swal.fire({
+              title: 'Game Over!',
+              text: 'Player 1 Wins!',
+            });
             first.isTurn = false;
             second.isTurn = false;
             updateEndgameUI();
@@ -136,7 +140,10 @@ const startGame = () => {
           // If ship, means successful hit, so update previouslyHit for smart AI
           second.player.setPreviousHit({ x: target2.x, y: target2.y });
           if (first.board.isEveryShipSunk()) {
-            alert('Game over! Player 2 wins!');
+            Swal.fire({
+              title: 'Game Over!',
+              text: 'Player 2 Wins!',
+            });
             first.isTurn = false;
             second.isTurn = false;
             updateEndgameUI();
@@ -185,17 +192,25 @@ const pregameSetup = () => {
               currentShipIndex
             );
         } else {
-          alert(
-            'Cannot place ship here. Try another position that is at least 1 spot away from other ships.'
-          );
+          Swal.fire({
+            title: 'Error!',
+            text: 'Cannot place ship here. Try another position that is at least 1 spot away from other ships.',
+            icon: 'error',
+          });
         }
       } catch (error) {
-        alert(error);
+        Swal.fire({
+          title: 'Error!',
+          text: error,
+          icon: 'error',
+        });
       }
     } else {
-      alert(
-        'No more ships left! You can either reset the grid or start the game.'
-      );
+      Swal.fire({
+        title: 'All ships have already been placed!',
+        text: 'You can either reset the grid or start the game.',
+        icon: 'warning',
+      });
     }
   });
 
@@ -215,17 +230,30 @@ const pregameSetup = () => {
         updateUIforStartGame();
         startGame();
       } else {
-        alert(
-          `You still have ${
+        Swal.fire({
+          title: 'Cannot start game yet!',
+          text: `You still have ${
             ships.length - currentShipIndex + 1
-          } ships left to place`
-        );
+          } ships left to place`,
+          icon: 'error',
+        });
       }
     });
-    addListenerToRestartButton(() => {
-      updateRestartGameUI();
-      resetGrid();
-      pregameSetup();
+    addListenerToRestartButton(async () => {
+      const confirm = await Swal.fire({
+        title: 'Are you sure?',
+        text: 'Do you really want to restart?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes! Restart!',
+      });
+      if (confirm.isConfirmed) {
+        updateRestartGameUI();
+        resetGrid();
+        pregameSetup();
+      }
     });
     isFirstTime = false;
   }
