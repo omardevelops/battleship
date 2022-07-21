@@ -10,9 +10,28 @@
 
 <body>
   <h1 id="logo">BATTLESHIP</h1>
-  <div id="grids-container">
+  <div id="grids-container" class="hidden">
     <div id="player1-grid" class="grid"></div>
     <div id="player2-grid" class="grid"></div>
+  </div>
+
+  <h1 id="placeship">Place Your Ships</h1>
+
+  <div id="ship-placement">
+    <div id="headers">
+      <h1>Place Ship 1 (5 slots)</h1>
+      <h2>Click on a valid spot on your grid</h2>
+      <h3>Note: It is illegal to place ships within 1 spot of each other</h3>
+    </div>
+    <div>
+      <button class="menu" id="reset">Reset Grid</button>
+      <button class="menu" id="start">Start Game</button>
+    </div>
+    <button id="axis" class="menu">Axis: X</button>
+
+    <div id="grid-container">
+      <div class="grid"></div>
+    </div>
   </div>
 
 

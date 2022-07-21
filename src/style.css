@@ -1,6 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
 body {
+  font-family: 'Roboto', sans-serif;
+  text-align: center;
+}
+
+body > h1 {
+  font-size: 2rem;
+  margin-bottom: 30px;
+  font-weight: bold;
 }
 
 #logo {
@@ -11,7 +19,7 @@ body {
 }
 
 #grids-container {
-  display: flex;
+  display: none;
   justify-content: center;
   flex-wrap: wrap;
   gap: 100px;
@@ -21,6 +29,7 @@ body {
   display: grid;
   grid-template-columns: repeat(10, 1fr);
   width: fit-content;
+  height: fit-content;
   background-color: black;
   gap: 2px;
   border: 2px solid black;
@@ -57,4 +66,54 @@ button.miss {
 
 button.hit {
   background-color: red;
+}
+
+#ship-placement #headers {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+#ship-placement h1 {
+  font-weight: bold;
+  font-style: italic;
+  font-size: 1.5rem;
+  color: green;
+}
+
+#ship-placement h2 {
+  font-size: 1.2rem;
+}
+
+#ship-placement {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  padding: 15px;
+  flex-wrap: wrap;
+}
+
+#ship-placement .grid {
+  display: grid;
+}
+
+button.menu {
+  border: 2px solid black;
+  font-size: 1.5rem;
+  padding: 5px 15px;
+}
+
+button.menu:hover {
+  background-color: black;
+  color: white;
+}
+
+button#axis {
+  background-color: rgb(96, 215, 255);
+}
+
+button#axis:hover {
+  background-color: rgb(19, 157, 203);
+  color: white;
 }
