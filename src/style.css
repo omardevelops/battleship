@@ -1,1 +1,136 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+body {
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.5rem;
+  text-align: center;
+  background-color: whitesmoke;
+}
 
+body > h1 {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+#logo {
+  font-size: 4rem;
+  font-family: 'Press Start 2P', cursive;
+  margin: 25px;
+  text-align: center;
+}
+
+#grids-container {
+  display: none;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 100px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  width: fit-content;
+  height: fit-content;
+  background-color: black;
+  gap: 2px;
+  border: 2px solid black;
+}
+
+.grid > * {
+  width: 40px;
+  height: 40px;
+  background-color: white;
+  border: none;
+}
+
+/* .grid > *:hover {
+  background-color: rgb(225, 225, 225);
+} */
+
+button.empty {
+  background-color: white;
+}
+
+button.ship {
+  background-color: greenyellow;
+}
+
+button.ship::after {
+  /* content: '⬤'; */
+  /* content: '✖'; */
+  font-size: 1.5rem;
+}
+
+button.miss {
+  background-color: gray;
+}
+
+button.hit {
+  background-color: red;
+}
+
+#ship-placement {
+  margin: 15px auto;
+  font-weight: bold;
+}
+
+#ship-placement #headers {
+  display: flex;
+  flex-direction: column;
+
+  gap: 10px;
+}
+#ship-placement h1 {
+  font-style: italic;
+  font-weight: 900;
+  font-size: 1.6rem;
+  color: green;
+}
+
+#ship-placement {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  padding: 15px;
+  flex-wrap: wrap;
+}
+
+#ship-placement .grid {
+  display: grid;
+}
+
+button.menu {
+  cursor: pointer;
+  border: none;
+  border-radius: 30px;
+  font-size: 1.3rem;
+  font-weight: 600;
+  padding: 15px 40px;
+  background-color: #2660a4;
+  color: white;
+}
+
+button.menu:hover {
+  background-color: #3980d0;
+}
+
+button#axis {
+  color: black;
+  background-color: #ffbe0b;
+}
+
+button#axis:hover {
+  background-color: #ffd153;
+}
+
+button#restart {
+  display: none;
+  margin: 30px auto;
+}
+
+@media only screen and (max-width: 600px) {
+  #logo {
+    font-size: 2rem;
+  }
+}

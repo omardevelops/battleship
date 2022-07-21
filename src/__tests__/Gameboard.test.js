@@ -113,6 +113,28 @@ test('Does not place a ship near preexisting ships (x-axis) ', () => {
   ]);
 });
 
+test('Does not place a ship near preexisting ships (x-axis) (2) ', () => {
+  const board = Gameboard(10);
+  board.registerShip(Ship(4));
+  board.registerShip(Ship(3));
+  board.registerShip(Ship(2));
+  board.placeShipOnGrid(1, { x: 0, y: 4 }, 'x');
+  board.placeShipOnGrid(2, { x: 2, y: 8 }, 'x');
+  board.placeShipOnGrid(3, { x: 0, y: 7 }, 'x'); // fix bug
+  expect(board.grid).toEqual([
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [1, 1, 1, 1, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 2, 2, 2, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  ]);
+});
+
 test('Placing ship out of bounds throws (x)', () => {
   const board = Gameboard(5); // 5x5 grid
   const ship = Ship(4);
@@ -150,7 +172,8 @@ test('Placing ship longer than allowed throws (y-axis)', () => {
 });
 
 describe('Receive Attack function', () => {
-  let board, ships;
+  let board;
+  let ships;
   beforeEach(() => {
     board = Gameboard(5);
     ships = [Ship(4), Ship(3), Ship(2)];
@@ -200,7 +223,8 @@ describe('Receive Attack function', () => {
 });
 
 describe('Check if all ships are sunk', () => {
-  let board, ships;
+  let board;
+  let ships;
   beforeEach(() => {
     board = Gameboard(5);
     ships = [Ship(2), Ship(1), Ship(2)];
@@ -240,5 +264,183 @@ describe('Check if all ships are sunk', () => {
     ];
     coords.forEach((coord) => board.receiveAttack(coord));
     expect(board.isEveryShipSunk()).toBe(false);
+  });
+});
+
+test('Getting a grid spot value for empty spot', () => {
+  const gameboard = Gameboard(5);
+  expect(gameboard.getSpotValue({ x: 1, y: 1 })).toBe(0);
+});
+
+test('Getting a grid spot value for spot with ship', () => {
+  const gameboard = Gameboard(5);
+  gameboard.registerShip(Ship(4));
+  gameboard.registerShip(Ship(4));
+  gameboard.placeShipOnGrid(2, { x: 1, y: 1 }, 'y');
+  expect(gameboard.getSpotValue({ x: 1, y: 4 })).toBe(2);
+});
+
+test('Getting a grid spot value for missed spot', () => {
+  const gameboard = Gameboard(5);
+  gameboard.registerShip(Ship(4));
+  gameboard.registerShip(Ship(4));
+  gameboard.placeShipOnGrid(2, { x: 1, y: 1 }, 'y');
+  gameboard.receiveAttack({ x: 4, y: 4 });
+  expect(gameboard.getSpotValue({ x: 4, y: 4 })).toBe('m');
+});
+
+test('Getting a grid spot value for hit spot', () => {
+  const gameboard = Gameboard(5);
+  gameboard.registerShip(Ship(4));
+  gameboard.registerShip(Ship(4));
+  gameboard.placeShipOnGrid(2, { x: 1, y: 1 }, 'y');
+  gameboard.receiveAttack({ x: 1, y: 4 });
+  expect(gameboard.getSpotValue({ x: 1, y: 4 })).toBe('x');
+});
+
+test('Getting a grid spot value for out of bounds spot', () => {
+  const gameboard = Gameboard(5);
+  expect(gameboard.getSpotValue({ x: 5, y: 5 })).toBe(-1);
+});
+
+test('Getting a grid spot value for out of bounds spot (2)', () => {
+  const gameboard = Gameboard(5);
+  expect(gameboard.getSpotValue({ x: -1, y: 5 })).toBe(-1);
+});
+
+test('Attacking allowed for empty spot', () => {
+  const gameboard = Gameboard(5);
+  gameboard.registerShip(Ship(4));
+  gameboard.placeShipOnGrid(1, { x: 0, y: 0 }, 'y');
+  expect(gameboard.isAttackingAllowed({ x: 2, y: 2 })).toBe(true);
+});
+
+test('Attacking allowed for spot with ship', () => {
+  const gameboard = Gameboard(5);
+  gameboard.registerShip(Ship(4));
+  gameboard.placeShipOnGrid(1, { x: 0, y: 0 }, 'y');
+  expect(gameboard.isAttackingAllowed({ x: 0, y: 2 })).toBe(true);
+});
+
+test('Attacking not allowed for previously hit spot', () => {
+  const gameboard = Gameboard(5);
+  gameboard.registerShip(Ship(4));
+  gameboard.placeShipOnGrid(1, { x: 0, y: 0 }, 'y');
+  gameboard.receiveAttack({ x: 0, y: 2 });
+  expect(gameboard.isAttackingAllowed({ x: 0, y: 2 })).toBe(false);
+});
+
+test('Attacking not allowed for previously hit (missed) spot', () => {
+  const gameboard = Gameboard(5);
+  gameboard.registerShip(Ship(4));
+  gameboard.placeShipOnGrid(1, { x: 0, y: 0 }, 'y');
+  gameboard.receiveAttack({ x: 4, y: 4 });
+  expect(gameboard.isAttackingAllowed({ x: 4, y: 4 })).toBe(false);
+});
+
+test('Attacking not allowed for out of bounds spot', () => {
+  const gameboard = Gameboard(5);
+  expect(gameboard.isAttackingAllowed({ x: 5, y: 5 })).toBe(false);
+});
+
+test('Attacking not allowed for out of bounds spot (2)', () => {
+  const gameboard = Gameboard(5);
+  expect(gameboard.isAttackingAllowed({ x: -1, y: 0 })).toBe(false);
+});
+
+test('Attacking not allowed for out of bounds spot (3)', () => {
+  const gameboard = Gameboard(5);
+  expect(gameboard.isAttackingAllowed({ x: 0, y: -1 })).toBe(false);
+});
+
+test('isShipOnSpot true case', () => {
+  const gameboard = Gameboard(5);
+  gameboard.registerShip(Ship(4));
+  gameboard.placeShipOnGrid(1, { x: 0, y: 0 }, 'y');
+  expect(gameboard.isShipOnSpot({ x: 0, y: 2 })).toBe(true);
+});
+
+test('isShipOnSpot false case', () => {
+  const gameboard = Gameboard(5);
+  gameboard.registerShip(Ship(4));
+  gameboard.placeShipOnGrid(1, { x: 0, y: 0 }, 'y');
+  expect(gameboard.isShipOnSpot({ x: 4, y: 4 })).toBe(false);
+});
+
+test('isShipOnSpot false case on hit', () => {
+  const gameboard = Gameboard(5);
+  gameboard.registerShip(Ship(4));
+  gameboard.placeShipOnGrid(1, { x: 0, y: 0 }, 'y');
+  gameboard.receiveAttack({ x: 0, y: 0 });
+  expect(gameboard.isShipOnSpot({ x: 0, y: 0 })).toBe(false);
+});
+
+test('isShipOnSpot false case on miss', () => {
+  const gameboard = Gameboard(5);
+  gameboard.registerShip(Ship(4));
+  gameboard.placeShipOnGrid(1, { x: 0, y: 0 }, 'y');
+  gameboard.receiveAttack({ x: 4, y: 4 });
+  expect(gameboard.isShipOnSpot({ x: 4, y: 4 })).toBe(false);
+});
+
+describe('getAdjacentCoords func', () => {
+  let board;
+  beforeEach(() => {
+    board = Gameboard(5);
+  });
+
+  test('Center position', () => {
+    expect(board.getAdjacentCoords({ x: 2, y: 2 })).toEqual([
+      { x: 1, y: 2 },
+      { x: 2, y: 1 },
+      { x: 3, y: 2 },
+      { x: 2, y: 3 },
+    ]);
+  });
+
+  test('Left edge position', () => {
+    expect(board.getAdjacentCoords({ x: 0, y: 2 })).toEqual([
+      { x: 0, y: 1 },
+      { x: 1, y: 2 },
+      { x: 0, y: 3 },
+    ]);
+  });
+
+  test('Top edge position', () => {
+    expect(board.getAdjacentCoords({ x: 2, y: 0 })).toEqual([
+      { x: 1, y: 0 },
+      { x: 3, y: 0 },
+      { x: 2, y: 1 },
+    ]);
+  });
+
+  test('Right edge position', () => {
+    expect(board.getAdjacentCoords({ x: 4, y: 2 })).toEqual([
+      { x: 3, y: 2 },
+      { x: 4, y: 1 },
+      { x: 4, y: 3 },
+    ]);
+  });
+
+  test('Bottom edge position', () => {
+    expect(board.getAdjacentCoords({ x: 2, y: 4 })).toEqual([
+      { x: 1, y: 4 },
+      { x: 2, y: 3 },
+      { x: 3, y: 4 },
+    ]);
+  });
+
+  test('Top left corner edge position', () => {
+    expect(board.getAdjacentCoords({ x: 0, y: 0 })).toEqual([
+      { x: 1, y: 0 },
+      { x: 0, y: 1 },
+    ]);
+  });
+
+  test('Bottom right corner edge position', () => {
+    expect(board.getAdjacentCoords({ x: 4, y: 4 })).toEqual([
+      { x: 3, y: 4 },
+      { x: 4, y: 3 },
+    ]);
   });
 });
