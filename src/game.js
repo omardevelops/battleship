@@ -19,6 +19,31 @@ let currentShipIndex = 1;
 let currentAxis = 'x';
 let board = null;
 
+// Creates and returns a gameboard with random ship placement
+const genRandomEnemyBoard = () => {
+  const randomBoard = Gameboard(10);
+  const shipSizes = [5, 4, 3, 3, 2];
+  const axes = ['x', 'y'];
+  shipSizes.forEach((size) => randomBoard.registerShip(Ship(size)));
+  let shipIndex = 1;
+  let startPos;
+  let axis;
+  let isPlaced;
+  do {
+    startPos = Player().generateRandomXY();
+    axis = axes[Math.floor(Math.random() * 2)];
+    try {
+      isPlaced = randomBoard.placeShipOnGrid(shipIndex, startPos, axis);
+    } catch (error) {
+      isPlaced = false;
+    }
+    console.log(`${startPos} ${axis} ${isPlaced}`);
+    if (isPlaced) shipIndex += 1;
+  } while (isPlaced === false || shipIndex !== 6);
+  console.log(randomBoard.grid);
+  return randomBoard;
+};
+
 const startGame = () => {
   // Setup game
   const first = {
@@ -37,14 +62,7 @@ const startGame = () => {
   first.board = board;
 
   // Setup second player gameboard
-  second.board.registerShip(Ship(4));
-  second.board.registerShip(Ship(3));
-  second.board.registerShip(Ship(3));
-  second.board.registerShip(Ship(2));
-  second.board.placeShipOnGrid(1, { x: 2, y: 3 }, 'y');
-  second.board.placeShipOnGrid(2, { x: 2, y: 8 }, 'x');
-  second.board.placeShipOnGrid(3, { x: 6, y: 4 }, 'x');
-  second.board.placeShipOnGrid(4, { x: 8, y: 0 }, 'y');
+  second.board = genRandomEnemyBoard();
 
   updateBoardUI(0, first.board, false);
 
